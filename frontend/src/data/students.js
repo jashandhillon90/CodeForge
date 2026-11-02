@@ -1,0 +1,67 @@
+// students.js — sample leaderboard data
+
+export const STUDENTS = [
+  { id: 1, name: "Aryan Mehta", uid: "2023CS001", section: "CS-A", rating: 2341, solved: 187, contestPoints: 4820, rank: 1, avatar: "AM", joined: "Aug 2023" },
+  { id: 2, name: "Priya Sharma", uid: "2023CS002", section: "CS-B", rating: 2198, solved: 162, contestPoints: 4310, rank: 2, avatar: "PS", joined: "Aug 2023" },
+  { id: 3, name: "Rohan Gupta", uid: "2022CS015", section: "CS-A", rating: 2056, solved: 144, contestPoints: 3980, rank: 3, avatar: "RG", joined: "Aug 2022" },
+  { id: 4, name: "Sneha Patel", uid: "2023CS034", section: "CS-C", rating: 1923, solved: 128, contestPoints: 3650, rank: 4, avatar: "SP", joined: "Aug 2023" },
+  { id: 5, name: "Karan Verma", uid: "2024CS007", section: "CS-A", rating: 1876, solved: 115, contestPoints: 3420, rank: 5, avatar: "KV", joined: "Aug 2024" },
+  { id: 6, name: "Ananya Singh", uid: "2022CS041", section: "CS-B", rating: 1802, solved: 109, contestPoints: 3200, rank: 6, avatar: "AS", joined: "Aug 2022" },
+  { id: 7, name: "Dev Patel", uid: "2023CS019", section: "CS-D", rating: 1744, solved: 98, contestPoints: 2980, rank: 7, avatar: "DP", joined: "Aug 2023" },
+  { id: 8, name: "Meera Iyer", uid: "2024CS022", section: "CS-B", rating: 1698, solved: 91, contestPoints: 2750, rank: 8, avatar: "MI", joined: "Aug 2024" },
+  { id: 9, name: "Rahul Joshi", uid: "2023CS055", section: "CS-A", rating: 1655, solved: 86, contestPoints: 2640, rank: 9, avatar: "RJ", joined: "Aug 2023" },
+  { id: 10, name: "Pooja Nair", uid: "2022CS028", section: "CS-C", rating: 1612, solved: 82, contestPoints: 2510, rank: 10, avatar: "PN", joined: "Aug 2022" },
+  { id: 11, name: "Vivek Kumar", uid: "2024CS033", section: "CS-D", rating: 1574, solved: 76, contestPoints: 2380, rank: 11, avatar: "VK", joined: "Aug 2024" },
+  { id: 12, name: "Aishwarya Rao", uid: "2023CS048", section: "CS-B", rating: 1531, solved: 71, contestPoints: 2250, rank: 12, avatar: "AR", joined: "Aug 2023" },
+  { id: 13, name: "Nikhil Bansal", uid: "2022CS012", section: "CS-A", rating: 1489, solved: 67, contestPoints: 2140, rank: 13, avatar: "NB", joined: "Aug 2022" },
+  { id: 14, name: "Kavya Reddy", uid: "2024CS061", section: "CS-C", rating: 1445, solved: 63, contestPoints: 2010, rank: 14, avatar: "KR", joined: "Aug 2024" },
+  { id: 15, name: "Saurabh Mishra", uid: "2023CS072", section: "CS-A", rating: 1402, solved: 58, contestPoints: 1890, rank: 15, avatar: "SM", joined: "Aug 2023" },
+  // DEMO USER
+  { id: 16, name: "Demo Student", uid: "2024CS099", section: "CS-B", rating: 1356, solved: 12, contestPoints: 1200, rank: 16, avatar: "DS", joined: "Aug 2024", isCurrentUser: true },
+  { id: 17, name: "Tanvi Deshpande", uid: "2023CS081", section: "CS-D", rating: 1320, solved: 52, contestPoints: 1780, rank: 17, avatar: "TD", joined: "Aug 2023" },
+  { id: 18, name: "Akash Yadav", uid: "2024CS014", section: "CS-A", rating: 1289, solved: 48, contestPoints: 1650, rank: 18, avatar: "AY", joined: "Aug 2024" },
+  { id: 19, name: "Riya Shah", uid: "2022CS039", section: "CS-B", rating: 1253, solved: 44, contestPoints: 1540, rank: 19, avatar: "RS", joined: "Aug 2022" },
+  { id: 20, name: "Harsh Agarwal", uid: "2024CS025", section: "CS-C", rating: 1218, solved: 40, contestPoints: 1430, rank: 20, avatar: "HA", joined: "Aug 2024" },
+];
+
+// Demo user profile
+export const DEMO_USER = {
+  id: 16,
+  name: "Demo Student",
+  uid: "2024CS099",
+  email: "demo@university.edu",
+  section: "CS-B",
+  year: "2nd Year",
+  rating: 1356,
+  maxRating: 1402,
+  solved: 12,
+  rank: 16,
+  avatar: "DS",
+  joined: "Aug 2024",
+  contestsParticipated: 3,
+  acceptanceRate: 73.5,
+  streak: 7,
+  bio: "Passionate about algorithms and competitive programming. Currently learning dynamic programming.",
+  achievements: [
+    { name: "First Solve", description: "Solved your first problem", icon: "🎯", date: "Sep 2024" },
+    { name: "Speed Coder", description: "Solved 5 problems in one session", icon: "⚡", date: "Oct 2024" },
+    { name: "Contest Debut", description: "Participated in first contest", icon: "🏆", date: "Oct 2024" },
+    { name: "Week Streak", description: "7-day coding streak", icon: "🔥", date: "Nov 2024" },
+  ],
+  recentActivity: [
+    { type: "solved", problem: "Two Sum", difficulty: "Easy", date: "2 hours ago" },
+    { type: "contest", name: "CWC-11", result: "Rank 16", date: "1 week ago" },
+    { type: "solved", problem: "Binary Search", difficulty: "Easy", date: "2 days ago" },
+    { type: "solved", problem: "Valid Parentheses", difficulty: "Easy", date: "3 days ago" },
+  ],
+  topicProgress: [
+    { topic: "Arrays", solved: 4, total: 5 },
+    { topic: "Binary Search", solved: 2, total: 3 },
+    { topic: "Stack", solved: 1, total: 2 },
+    { topic: "Dynamic Programming", solved: 3, total: 7 },
+    { topic: "Trees", solved: 1, total: 4 },
+    { topic: "Graphs", solved: 1, total: 5 },
+    { topic: "Greedy", solved: 0, total: 2 },
+    { topic: "Strings", solved: 0, total: 3 },
+  ],
+};
