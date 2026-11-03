@@ -1,0 +1,186 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: codeforge-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-codeforge}
+      POSTGRES_USER: ${POSTGRES_USER:-codeforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-codeforge}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: codeforge-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: codeforge-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    container_name: codeforge-auth-service
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    environment:
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+    ports:
+      - "8081:8081"
+
+  problem-service:
+    build:
+      context: ./services/problem-service
+    container_name: codeforge-problem-service
+    depends_on:
+      - postgres
+    environment:
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+    ports:
+      - "8082:8082"
+
+  contest-service:
+    build:
+      context: ./services/contest-service
+    container_name: codeforge-contest-service
+    depends_on:
+      - postgres
+    environment:
+      SERVER_PORT: 8083
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+    ports:
+      - "8083:8083"
+
+  submission-service:
+    build:
+      context: ./services/submission-service
+    container_name: codeforge-submission-service
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      SERVER_PORT: 8084
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+    ports:
+      - "8084:8084"
+
+  evaluation-service:
+    build:
+      context: ./services/evaluation-service
+    container_name: codeforge-evaluation-service
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      SERVER_PORT: 8086
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      JUDGE0_ENABLED: false
+    ports:
+      - "8086:8086"
+
+  leaderboard-service:
+    build:
+      context: ./services/leaderboard-service
+    container_name: codeforge-leaderboard-service
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SERVER_PORT: 8085
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8085:8085"
+
+  analytics-service:
+    build:
+      context: ./services/analytics-service
+    container_name: codeforge-analytics-service
+    depends_on:
+      - postgres
+    environment:
+      SERVER_PORT: 8087
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+    ports:
+      - "8087:8087"
+
+  notification-service:
+    build:
+      context: ./services/notification-service
+    container_name: codeforge-notification-service
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      SERVER_PORT: 8088
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeforge
+      SPRING_DATASOURCE_USERNAME: codeforge
+      SPRING_DATASOURCE_PASSWORD: codeforge
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+    ports:
+      - "8088:8088"
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: codeforge-api-gateway
+    depends_on:
+      - auth-service
+      - problem-service
+      - contest-service
+      - submission-service
+      - evaluation-service
+      - leaderboard-service
+      - analytics-service
+      - notification-service
+    environment:
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
